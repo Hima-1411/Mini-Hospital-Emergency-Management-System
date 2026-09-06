@@ -1,194 +1,142 @@
-
 package hospital;
 
+import java.util.Scanner;
+
 public class Main {
-
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-        // Create BST
-        PatientBST patientBST = new PatientBST();
-
-        // Create Emergency Queue
-        EmergencyQueue emergencyQueue = new EmergencyQueue();
-
-        // Create Treatment Stack
-        TreatmentStack treatmentStack = new TreatmentStack();
-        
-     // PatientVisitHistory Test Demonstration
+        PatientBST bst = new PatientBST();
+        EmergencyQueue queue = new EmergencyQueue();
+        TreatmentStack stack = new TreatmentStack();
         PatientVisitHistory visitHistory = new PatientVisitHistory();
 
-        System.out.println("\n=== PATIENT VISIT HISTORY (SINGLY LINKED LIST) ===");
-        // 1. Add Visits
-        visitHistory.addVisit(501, "2026-01-10", "Dr. Perera", "Fever", "Paracetamol");
-        visitHistory.addVisit(502, "2026-02-15", "Dr. Silva", "Flu", "Rest & Antibiotics");
-        visitHistory.addVisit(503, "2026-03-01", "Dr. Fernando", "Chest Pain", "ECG Test");
+        // Sample Pre-loaded Data
+        bst.insert(new Patient(101, "Kamal Silva", 45, "0771234567", "Chest Pain"));
+        queue.enqueue(new Patient(201, "Nimal Perera", 30, "0719876543", "High Fever"));
 
-        // 2. Display All Visits
-        visitHistory.displayHistory();
+        while (true) {
+            System.out.println("\n==========================================================");
+            System.out.println("   🏥 MINI HOSPITAL EMERGENCY MANAGEMENT SYSTEM 🏥");
+            System.out.println("==========================================================");
+            System.out.println("1. Binary Search Tree (BST) - Patient Management");
+            System.out.println("2. Priority Queue - Emergency Triage");
+            System.out.println("3. Stack - Treatment Records");
+            System.out.println("4. Singly Linked List - Patient Visit History");
+            System.out.println("5. Exit System");
+            System.out.print("👉 Choose an option (1-5): ");
 
-        // 3. Search Visit
-        visitHistory.searchVisit(502);
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a number.");
+                scanner.next();
+                continue;
+            }
 
-        // 4. Remove Visit
-        visitHistory.removeVisit(502);
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        // 5. Display History After Removal
-        visitHistory.displayHistory();
+            switch (choice) {
+                case 1:
+                    System.out.println("\n--- 📌 BST Operations ---");
+                    System.out.println("1. Insert Patient | 2. Search Patient | 3. Display All Patients");
+                    System.out.print("Choose action: ");
+                    int bstChoice = scanner.nextInt();
+                    scanner.nextLine();
 
+                    if (bstChoice == 1) {
+                        System.out.print("Enter Patient ID: ");
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Name: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Enter Age: ");
+                        int age = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Contact: ");
+                        String contact = scanner.nextLine();
+                        System.out.print("Enter Condition: ");
+                        String condition = scanner.nextLine();
 
-        // =========================
-        // CREATE PATIENTS
-        // =========================
+                        bst.insert(new Patient(id, name, age, contact, condition));
+                        System.out.println("✅ Patient inserted successfully!");
+                    } else if (bstChoice == 2) {
+                        System.out.print("Enter Patient ID to Search: ");
+                        int searchId = scanner.nextInt();
+                        Patient p = bst.search(searchId);
+                        if (p != null) {
+                            System.out.println("✅ Found: ID " + p.getPatientId() + " - " + p.getPatientName());
+                        } else {
+                            System.out.println("❌ Patient Not Found!");
+                        }
+                    } else {
+                        System.out.println("\n📋 All Patients:");
+                        bst.displayAll();
+                    }
+                    break;
 
-        Patient p1 = new Patient(
-                101,
-                "Ahmed",
-                25,
-                "0771234567",
-                "Fever"
-        );
+                case 2:
+                    System.out.println("\n--- 📌 Emergency Queue Operations ---");
+                    System.out.println("1. Enqueue Patient | 2. Dequeue | 3. Display Queue");
+                    System.out.print("Choose action: ");
+                    int qChoice = scanner.nextInt();
+                    scanner.nextLine();
 
-        Patient p2 = new Patient(
-                105,
-                "Aisha",
-                30,
-                "0772345678",
-                "Headache"
-        );
+                    if (qChoice == 1) {
+                        System.out.print("Enter Patient ID: ");
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Name: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Enter Age: ");
+                        int age = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Contact: ");
+                        String contact = scanner.nextLine();
+                        System.out.print("Enter Condition: ");
+                        String condition = scanner.nextLine();
 
-        Patient p3 = new Patient(
-                99,
-                "Mohamed",
-                45,
-                "0773456789",
-                "Diabetes"
-        );
+                        queue.enqueue(new Patient(id, name, age, contact, condition));
+                        System.out.println("✅ Added to Queue!");
+                    } else if (qChoice == 2) {
+                        queue.dequeue();
+                    } else {
+                        queue.displayQueue();
+                    }
+                    break;
 
+                case 3:
+                    System.out.println("\n--- 📌 Treatment Stack Operations ---");
+                    System.out.println("1. Pop Treatment | 2. Display Stack");
+                    System.out.print("Choose action: ");
+                    int sChoice = scanner.nextInt();
+                    scanner.nextLine();
 
-        // =========================
-        // BST - INSERT PATIENTS
-        // =========================
+                    if (sChoice == 1) {
+                        stack.pop();
+                    } else {
+                        // stack.display(); அல்லது stack.displayStack(); எது உன்னுடைய TreatmentStack.java-வில் உள்ளதோ அதை வைக்கவும்
+                        stack.displayHistory(); 
+                    }
+                    break;
 
-        patientBST.insert(p1);
-        patientBST.insert(p2);
-        patientBST.insert(p3);
+                case 4:
+                    System.out.println("\n--- 📌 Visit History Operations ---");
+                    System.out.println("1. Display History");
+                    System.out.print("Choose action: ");
+                    int vChoice = scanner.nextInt();
+                    scanner.nextLine();
 
+                    visitHistory.displayHistory();
+                    break;
 
-        // =========================
-        // EMERGENCY QUEUE
-        // =========================
+                case 5:
+                    System.out.println("Exiting System!");
+                    scanner.close();
+                    return;
 
-        System.out.println("\n=== EMERGENCY QUEUE ===");
-
-        emergencyQueue.enqueue(p1);
-        emergencyQueue.enqueue(p2);
-        emergencyQueue.enqueue(p3);
-
-        emergencyQueue.displayQueue();
-
-
-        // =========================
-        // DEQUEUE
-        // =========================
-
-        System.out.println("\n=== NEXT PATIENT FOR TREATMENT ===");
-
-        Patient nextPatient = emergencyQueue.dequeue();
-
-        if (nextPatient != null) {
-            System.out.println(
-                    "Now treating: " + nextPatient.getPatientName()
-            );
+                default:
+                    System.out.println("Invalid choice!");
+            }
         }
-
-
-        // =========================
-        // QUEUE AFTER DEQUEUE
-        // =========================
-
-        System.out.println("\n=== QUEUE AFTER DEQUEUE ===");
-
-        emergencyQueue.displayQueue();
-
-
-        // =========================
-        // DISPLAY ALL PATIENTS
-        // =========================
-
-        System.out.println("\n=== ALL PATIENTS ===");
-
-        patientBST.inOrder();
-
-
-        // =========================
-        // SEARCH PATIENT
-        // =========================
-
-        System.out.println("\n=== SEARCH PATIENT ===");
-
-        Patient result = patientBST.search(105);
-
-        if (result != null) {
-            result.displayPatient();
-        } else {
-            System.out.println("Patient not found.");
-        }
-
-
-        // =========================
-        // DELETE PATIENT
-        // =========================
-
-        System.out.println("\n=== DELETE PATIENT 99 ===");
-
-        patientBST.delete(99);
-
-
-        // =========================
-        // PATIENTS AFTER DELETE
-        // =========================
-
-        System.out.println("\n=== PATIENTS AFTER DELETE ===");
-
-        patientBST.inOrder();
-
-
-        // =========================
-        // TREATMENT HISTORY
-        // =========================
-
-        System.out.println("\n=== TREATMENT HISTORY ===");
-
-        Treatment t1 = new Treatment(
-                101,
-                "Initial diagnosis"
-        );
-
-        Treatment t2 = new Treatment(
-                101,
-                "Blood test"
-        );
-
-        Treatment t3 = new Treatment(
-                101,
-                "Medication prescribed"
-        );
-
-        treatmentStack.push(t1);
-        treatmentStack.push(t2);
-        treatmentStack.push(t3);
-
-        treatmentStack.displayHistory();
-
-
-
-        System.out.println("\n=== POP LATEST TREATMENT ===");
-
-        Treatment latestTreatment = treatmentStack.pop();
-
-        if (latestTreatment != null) {
-            latestTreatment.displayTreatment();
-        }
-        
-     }
+    }
 }
